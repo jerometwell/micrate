@@ -31,12 +31,12 @@ module Micrate
       end
     end
 
-    def self.run_create
-      if ARGV.size < 1
+    def self.run_create(argv)
+      if argv.size < 1
         raise "Migration name required"
       end
 
-      migration_file = Micrate.create(ARGV.shift, Micrate.migrations_dir, Time.local)
+      migration_file = Micrate.create(argv.shift, Micrate.migrations_dir, Time.local)
       puts "Created #{migration_file}"
     end
 
@@ -75,16 +75,16 @@ Commands:
     dbversion  Print the current version of the database"
     end
 
-    def self.run
+    def self.run(argv = ARGV)
       setup_logger
 
-      if ARGV.empty?
+      if argv.empty?
         print_help
         return
       end
 
       begin
-        case ARGV.shift
+        case argv.shift
         when "up"
           run_up
         when "down"
@@ -94,7 +94,7 @@ Commands:
         when "status"
           run_status
         when "create"
-          run_create
+          run_create argv
         when "dbversion"
           run_dbversion
         else
